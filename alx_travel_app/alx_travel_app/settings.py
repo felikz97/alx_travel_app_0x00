@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'listings',  # Custom app for listings
+    'listings.apps.ListingsConfig',  # Custom app for listings
     'rest_framework',  # Django REST Framework for API development
 ]
 
