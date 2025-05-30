@@ -11,21 +11,34 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+env = environ.Env(
+    DEBUG=(bool, False),  # Default to False if not set
+    SECRET_KEY=(str, 'django-insecure-lcd238mck@7-c=%mrtv)clma(bkg3rm(&rx%w*89dr1o1r($7u')
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Load environment variables
+env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lcd238mck@7-c=%mrtv)clma(bkg3rm(&rx%w*89dr1o1r($7u'
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-lcd238mck@7-c=%mrtv)clma(bkg3rm(&rx%w*89dr1o1r($7u')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "http://localhost:3000",  # Next.js dev server
+    "https://your-frontend-domain.com",
+    "127.0.0.1"
+]
 
 
 # Application definition
@@ -39,9 +52,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'listings.apps.ListingsConfig',  # Custom app for listings
     'rest_framework',  # Django REST Framework for API development
+    'corsheaders',  # CORS headers for cross-origin resource sharing
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
